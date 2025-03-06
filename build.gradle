@@ -34,7 +34,6 @@ dependencies {
 
 test {
     useJUnitPlatform()
-
     systemProperties = [
             'cucumber.plugin': 'json:build/reports/cucumber.json'
     ]
