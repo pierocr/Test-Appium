@@ -20,12 +20,17 @@ dependencies {
     testImplementation 'io.cucumber:cucumber-java:7.17.0'
     testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.17.0'
 
+    // JUnit Platform Suite API (necesario)
+    testImplementation 'org.junit.platform:junit-platform-suite-api:1.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-suite-engine:1.10.2'
+
     // Opcional para assertions claras
     testImplementation 'org.assertj:assertj-core:3.25.3'
 
     // Selenium support (opcional, pero útil)
     testImplementation 'org.seleniumhq.selenium:selenium-support:4.19.1'
 }
+
 
 test {
     useJUnitPlatform()
