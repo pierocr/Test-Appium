@@ -2,33 +2,35 @@ plugins {
     id 'java'
 }
 
-group = 'com.banco.automatizacion'
-version = '1.0-SNAPSHOT'
+group 'com.banco.automatizacion'
+version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation platform('org.junit:junit-bom:5.10.2')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
-    // Appium Java Client 8.x
-    testImplementation 'io.appium:java-client:8.4.0'
+    // Appium Java Client 8.x (actualizado)
+    testImplementation 'io.appium:java-client:9.2.2'
 
-    // Cucumber + JUnit 5
-    testImplementation 'io.cucumber:cucumber-java:7.13.0'
-    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.13.0'
-    testImplementation 'org.junit.platform:junit-platform-suite-engine:1.9.3'
+    // Cucumber con JUnit 5
+    testImplementation 'io.cucumber:cucumber-java:7.17.0'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.17.0'
 
-    // (Opcional) Aserciones más potentes con AssertJ
-    testImplementation 'org.assertj:assertj-core:3.24.2'
+    // Opcional para assertions claras
+    testImplementation 'org.assertj:assertj-core:3.25.3'
 
-    // Selenium 4.x (soporte adicional de WebDriver si lo requieres)
-    testImplementation 'org.seleniumhq.selenium:selenium-support:4.8.0'
-
+    // Selenium support (opcional, pero útil)
+    testImplementation 'org.seleniumhq.selenium:selenium-support:4.19.1'
 }
 
 test {
-    useJUnitPlatform() // Necesario si usas JUnit 5
+    useJUnitPlatform()
+
+    systemProperties = [
+            'cucumber.plugin': 'json:build/reports/cucumber.json'
+    ]
 }

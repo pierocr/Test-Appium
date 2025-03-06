@@ -14,4 +14,13 @@ pipeline {
             }
         }
     }
+
+    post {
+        always {
+            cucumber buildStatus: 'UNSTABLE',
+                     fileIncludePattern: '**/reports/cucumber.json',
+                     jsonReportDirectory: 'build/reports',
+                     sortingMethod: 'ALPHABETICAL'
+        }
+    }
 }
