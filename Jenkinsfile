@@ -21,6 +21,9 @@ pipeline {
                      fileIncludePattern: '**/cucumber.json',
                      jsonReportDirectory: 'build/reports',
                      sortingMethod: 'ALPHABETICAL'
+
+            // Archiva las capturas generadas durante la ejecución
+            archiveArtifacts artifacts: 'screenshots/*.png', allowEmptyArchive: true
         }
     }
 }
