@@ -30,17 +30,16 @@ dependencies {
     // Selenium support (opcional, pero útil)
     testImplementation 'org.seleniumhq.selenium:selenium-support:4.19.1'
 
+    // Manejo de archivos
     testImplementation 'commons-io:commons-io:2.15.1'
 
-    testImplementation 'io.qameta.allure:allure-cucumber7-jvm:2.27.0' // Soporte para Cucumber
-    testImplementation 'io.qameta.allure:allure-java-commons:2.27.0' // Módulo base de Allure
-
+    // Allure Reports para Cucumber
+    testImplementation 'io.qameta.allure:allure-cucumber7-jvm:2.27.0'
+    testImplementation 'io.qameta.allure:allure-java-commons:2.27.0'
 }
-
 
 test {
     useJUnitPlatform()
-    systemProperties = [
-            'cucumber.plugin': 'json:build/reports/cucumber.json'
-    ]
+    systemProperty "allure.results.directory", "build/allure-results"
+    systemProperty "cucumber.plugin", "json:build/allure-results/cucumber.json"
 }

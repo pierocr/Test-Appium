@@ -12,7 +12,7 @@ import static io.cucumber.junit.platform.engine.Constants.*;
 @SelectClasspathResource("features")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "steps")
 
-// 🔹 Asegura que TODOS los reportes vayan a build/allure-results/
+// 🔹 Fuerza que los reportes vayan a build/allure-results/
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value =
         "pretty, " +
                 "json:build/allure-results/cucumber.json, " +
