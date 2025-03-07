@@ -18,18 +18,21 @@ pipeline {
     post {
         always {
             cucumber buildStatus: 'UNSTABLE',
-                     fileIncludePattern: '**/cucumber.json',
+                     fileIncludePattern: 'build/reports/*.json',
                      jsonReportDirectory: 'build/reports',
                      sortingMethod: 'ALPHABETICAL'
 
-            // Archiva las capturas generadas durante la ejecución
             archiveArtifacts artifacts: 'screenshots/*.png', allowEmptyArchive: true
 
-            // Genera el reporte Allure
-                    allure([
-                        includeProperties: false,
-                        results: [[path: 'build/allure-results']]
-                    ])
+            // ⬇️ Aseguramos que el directorio de resultados de Allure existe
+            sh 'mkdir -p build/allure-results'
+
+            // ⬇️ Publica el reporte de Allure
+            allure([
+                includeProperties: false,
+                jdk: '',
+                results: [[path: 'build/allure-results']]
+            ])
         }
     }
 }
