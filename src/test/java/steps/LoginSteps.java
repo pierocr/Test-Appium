@@ -45,23 +45,49 @@ public class LoginSteps {
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
     }
 
-    @When("inicio la app e ingreso credenciales válidas")
-    public void inicioLaAppEIngresoCredenciales() {
-        //Toma Captura antes de ingresar las credenciales
-        tomarScreenshot("antes_de_ingresar_credenciales",2 );
+    @When("inicio la app e ingreso usuario {string} y contraseña {string}")
+    public void inicioLaAppEIngresoUsuarioYPass(String usuario, String pass) {
+        tomarScreenshot("antes_de_ingresar_credenciales", 2);
 
-        driver.findElement(AppiumBy.accessibilityId("test-Username")).sendKeys("standard_user");
-        driver.findElement(AppiumBy.accessibilityId("test-Password")).sendKeys("secret_sauce");
-        tomarScreenshot("credenciales_ingresadas",1);
+        if (!usuario.isEmpty()) {
+            driver.findElement(AppiumBy.accessibilityId("test-Username")).sendKeys(usuario);
+        }
+        if (!pass.isEmpty()) {
+            driver.findElement(AppiumBy.accessibilityId("test-Password")).sendKeys(pass);
+        }
 
+        tomarScreenshot("credenciales_ingresadas", 1);
         driver.findElement(AppiumBy.accessibilityId("test-LOGIN")).click();
     }
 
-    @Then("debo ver la pantalla principal")
-    public void deboVerLaPantallaPrincipal() {
-        WebElement title = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text='PRODUCTS']"));
-        Assertions.assertEquals("PRODUCTS", title.getText());
-        tomarScreenshot("Dentro_de_la_app",1);
+    @Then("el resultado del login debe ser {string}")
+    public void elResultadoDelLoginDebeSer(String resultadoEsperado) {
+        try {
+            WebElement title = driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text='PRODUCTS']"));
+            if ("éxito".equals(resultadoEsperado)) {
+                Assertions.assertEquals("PRODUCTS", title.getText());
+            } else {
+                Assertions.fail("El usuario debería haber fallado en el login");
+            }
+        } catch (Exception e) {
+            if ("usuario bloqueado".equals(resultadoEsperado)) {
+                WebElement mensajeError = driver.findElement(AppiumBy.xpath("//android.widget.TextView[contains(@text, 'locked out')]"));
+                Assertions.assertTrue(mensajeError.isDisplayed(), "Mensaje de usuario bloqueado no encontrado");
+            } else if ("credenciales inválidas".equals(resultadoEsperado)) {
+                WebElement mensajeError = driver.findElement(AppiumBy.xpath("//android.widget.TextView[contains(@text, 'Username and password do not match')]"));
+                Assertions.assertTrue(mensajeError.isDisplayed(), "Mensaje de credenciales inválidas no encontrado");
+            } else if ("campo usuario vacío".equals(resultadoEsperado)) {
+                WebElement mensajeError = driver.findElement(AppiumBy.xpath("//android.widget.TextView[contains(@text, 'Username is required')]"));
+                Assertions.assertTrue(mensajeError.isDisplayed(), "Mensaje de usuario vacío no encontrado");
+            } else if ("campo contraseña vacío".equals(resultadoEsperado)) {
+                WebElement mensajeError = driver.findElement(AppiumBy.xpath("//android.widget.TextView[contains(@text, 'Password is required')]"));
+                Assertions.assertTrue(mensajeError.isDisplayed(), "Mensaje de contraseña vacía no encontrado");
+            } else {
+                Assertions.fail("El resultado esperado no se encuentra manejado: " + resultadoEsperado);
+            }
+        }
+
+        tomarScreenshot("resultado_login", 1);
         driver.quit();
     }
 

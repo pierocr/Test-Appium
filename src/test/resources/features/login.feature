@@ -1,6 +1,17 @@
-Feature: Login en App Móvil
+Feature: Inicio de sesión en la aplicación
 
-  Scenario: Login exitoso
+  Background:
     Given que la aplicación está instalada
-    When inicio la app e ingreso credenciales válidas
-    Then debo ver la pantalla principal
+
+  Scenario Outline: Intento de inicio de sesión con diferentes credenciales
+    When inicio la app e ingreso usuario "<usuario>" y contraseña "<pass>"
+    Then el resultado del login debe ser "<resultado>"
+
+    Examples:
+      | usuario         | pass     | resultado              |
+      | standard_user   | secret_sauce  | éxito                  |
+      | locked_out_user | secret_sauce  | usuario bloqueado      |
+      | problem_user    | secret_sauce  | éxito                  |
+      | standard_user   | incorrecto    | credenciales inválidas |
+      |                | secret_sauce  | campo usuario vacío    |
+      | standard_user   |               | campo contraseña vacío |
