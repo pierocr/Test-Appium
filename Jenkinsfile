@@ -24,6 +24,12 @@ pipeline {
 
             // Archiva las capturas generadas durante la ejecución
             archiveArtifacts artifacts: 'screenshots/*.png', allowEmptyArchive: true
+
+            // Genera el reporte Allure
+                    allure([
+                        includeProperties: false,
+                        results: [[path: 'build/allure-results']]
+                    ])
         }
     }
 }

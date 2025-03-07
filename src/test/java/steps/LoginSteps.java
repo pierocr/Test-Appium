@@ -16,6 +16,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import io.qameta.allure.Allure; // <-- Se importa Allure para agregar capturas al reporte
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class LoginSteps {
 
@@ -64,6 +67,7 @@ public class LoginSteps {
 
     // Método actualizado para tomar screenshot con espera previa
     public static void tomarScreenshot(String nombreArchivo, int segundosEspera) {
+        // Si se define un tiempo de espera antes de la captura, se ejecuta un delay
         if (segundosEspera > 0) {
             try {
                 Thread.sleep(segundosEspera * 1000);
@@ -72,16 +76,26 @@ public class LoginSteps {
             }
         }
 
+        // Tomar la captura de pantalla con Appium
         File srcFile = driver.getScreenshotAs(OutputType.FILE);
         String fechaHora = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String directorioEvidencias = "screenshots/";
+        String directorioEvidencias = "screenshots/"; // Directorio donde se guardarán los archivos
         String rutaArchivo = directorioEvidencias + nombreArchivo + "_" + fechaHora + ".png";
 
         try {
-            FileUtils.copyFile(srcFile, new File(rutaArchivo));
-            System.out.println("Screenshot guardado en: " + rutaArchivo);
+            FileUtils.copyFile(srcFile, new File(rutaArchivo)); // Guarda la captura en la carpeta 'screenshots'
+            System.out.println("✅ Screenshot guardado en: " + rutaArchivo);
+
+            // ⬇️ **Nuevo cambio: Agregar la captura al reporte Allure**
+            try {
+                Allure.addAttachment(nombreArchivo, new FileInputStream(rutaArchivo));
+                System.out.println("📸 Screenshot agregado a Allure Report: " + nombreArchivo);
+            } catch (FileNotFoundException e) {
+                System.err.println("❌ Error agregando screenshot a Allure: " + e.getMessage());
+            }
+
         } catch (IOException e) {
-            System.err.println("Error guardando el screenshot: " + e.getMessage());
+            System.err.println("❌ Error guardando el screenshot: " + e.getMessage());
         }
     }
 

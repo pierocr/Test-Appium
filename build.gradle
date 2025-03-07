@@ -31,6 +31,10 @@ dependencies {
     testImplementation 'org.seleniumhq.selenium:selenium-support:4.19.1'
 
     testImplementation 'commons-io:commons-io:2.15.1'
+
+    testImplementation 'io.qameta.allure:allure-cucumber7-jvm:2.27.0' // Soporte para Cucumber
+    testImplementation 'io.qameta.allure:allure-java-commons:2.27.0' // Módulo base de Allure
+
 }
 
 
