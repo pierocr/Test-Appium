@@ -8,16 +8,15 @@ import org.junit.platform.suite.api.Suite;
 import static io.cucumber.junit.platform.engine.Constants.*;
 
 @Suite
-@IncludeEngines("cucumber") // Asegura que usa Cucumber como motor de pruebas
+@IncludeEngines("cucumber")
 @SelectClasspathResource("features")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "steps")
 
-// 🔹 Agrega los formatos de reporte necesarios
+// 🔹 Asegura que TODOS los reportes vayan a build/allure-results/
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value =
         "pretty, " +
                 "json:build/allure-results/cucumber.json, " +
                 "html:build/reports/cucumber-report.html, " +
-                "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
-)
+                "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm")
 public class RunCucumberTest {
 }
